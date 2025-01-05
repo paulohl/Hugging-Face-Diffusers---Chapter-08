@@ -1,0 +1,57 @@
+<h1 data-label="example-sentiment-analysis-ensemble" class="ltx_title_section">Example: Sentiment Analysis
+Ensemble</h1><div>This example shows how ensemble methods can improve the accuracy of
+sentiment analysis by combining predictions from multiple models.
+‘python
+from sklearn.ensemble import VotingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+model1 = LogisticRegression()
+model2 = SVC(probability=True)
+model3 = DecisionTreeClassifier()
+ensemble_model = VotingClassifier(
+estimators=[(’lr’, model1), (’svm’, model2), (’dt’, model3)],
+voting=’soft’
+)
+ensemble_model.fit(X_train, y_train)
+accuracy = ensemble_model.score(X_test, y_test)
+print(f”Ensemble accuracy: {accuracy:.2f}”)
+‘
+This code shows an ensemble approach to sentiment analysis using the
+VotingClassifier from the scikit-learn library. The ensemble model
+combines the predictions of three base models: logistic regression, a
+support vector classifier (SVC), and a decision tree classifier. Each of
+these base models contributes its unique strengths to improve the
+overall prediction accuracy of the sentiment analysis task.
+The code begins by importing the necessary libraries and defining the
+three base models. The logistic regression model (model1) is
+particularly effective for binary classification tasks due to its
+simplicity and ability to manage linearly separable data. The support
+vector classifier (model2) is configured to output probability
+estimates, making it suitable for integration in the ensemble. The
+decision tree classifier (model3) is included for its interpretability
+and ability to capture non-linear relationships in the data.
+Next, the VotingClassifier is instantiated with the three models as its
+components. The voting=’soft’ parameter specifies that the ensemble will
+use probability-weighted voting. In this method, each model’s confidence
+in its predictions is considered, allowing the ensemble to use the
+models’ strengths in areas where they excel. For instance, if logistic
+regression is more dependable in certain patterns, its higher confidence
+in those predictions will carry more weight in the final decision.
+The fit method is then used to train the ensemble model on the training
+dataset (X_train, y_train). During this process, each base model is
+trained independently on the same dataset, and their predictions are
+later aggregated by the ensemble. The ensemble’s ability to integrate
+diverse decision boundaries and use complementary strengths of its base
+models often results in better generalization and robustness than any
+single model.
+Finally, the score method evaluates the ensemble’s accuracy on the test
+dataset (X_test, y_test), providing a quantitative measure of its
+performance. The code concludes by printing the accuracy score, offering
+a sign of how well the ensemble model predicts sentiment labels compared
+to the ground truth.
+This ensemble approach shows the practicality of combining multiple
+classifiers to improve predictive performance in NLP tasks like
+sentiment analysis. By using the strengths of diverse models, the
+ensemble mitigates individual model weaknesses and enhances overall
+robustness and reliability.</div>
